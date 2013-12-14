@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/lib/com.google.ads"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="clip_horizontal" >
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+    </ListView>
+
+    <com.google.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+        android:id="@+id/ad_banner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        ads:refreshInterval="60"
+        app:adSize="BANNER"
+        app:adUnitId="@string/admob_id" >
+    </com.google.ads.AdView>
+
+    <TextView
+        android:id="@+id/text_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@android:id/list"
+        android:background="@android:color/darker_gray"
+        android:text="@string/more_from_dev"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/ball_trap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/text_bar"
+        android:drawableLeft="@drawable/ball_trap"
+        android:drawablePadding="10dp"
+        android:padding="5dp"
+        android:text="@string/ball_trap"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/p_diary_pro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ball_trap"
+        android:drawableLeft="@drawable/ic_launcher"
+        android:drawablePadding="10dp"
+        android:padding="5dp"
+        android:text="@string/p_diary_pro"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    
+    <item android:id="@+id/photo_toggle" android:title="@string/photo_toggle"></item><item
+        android:id="@+id/item_edit_note"
+        android:title="@string/edit_note">
+    </item>
+    <item android:id="@+id/item_delete_note" android:title="@string/delete">
+    </item>
+
+</menu>

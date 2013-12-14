@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <com.rahul.pDiary.PasswordPreference
+        android:key="pref_password"
+        android:password="true"
+        android:summary="@string/cp_summary"
+        android:title="@string/change_password" />
+
+    <ListPreference
+        android:entries="@array/security_questions"
+        android:entryValues="@array/question_values"
+        android:key="security_question"
+        android:summary="@string/question_summary"
+        android:title="@string/pref_security_question" />
+
+    <EditTextPreference
+        android:key="security_answer"
+        android:summary="@string/security_answer_summary"
+        android:title="@string/security_answer" />
+
+</PreferenceScreen>
