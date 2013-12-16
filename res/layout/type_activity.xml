@@ -45,8 +45,6 @@
         android:ems="10"
         android:hint="@string/editText_note_hint"
         android:inputType="textMultiLine|textCapSentences" >
-
-        <requestFocus />
     </EditText>
 
     <com.google.ads.AdView

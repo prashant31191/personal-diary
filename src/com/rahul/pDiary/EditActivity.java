@@ -1,9 +1,14 @@
 package com.rahul.pDiary;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
+import com.larswerkman.colorpicker.ColorPicker;
+import com.larswerkman.colorpicker.ColorPicker.OnColorChangedListener;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,8 +16,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -32,6 +40,10 @@ public class EditActivity extends Activity implements OnClickListener {
 	private static final int ACTION_TAKE_PHOTO_B = 1;
 	private static final int ACTIVITY_SELECT_IMAGE = 2;
 	private static final int GALLERY_DIALOG = 1;
+	
+	private String mCurrentPhotoPath;
+	private static final String JPEG_FILE_PREFIX = "IMG_";
+	private static final String JPEG_FILE_SUFFIX = ".jpg";
 
 	Button button_save, button_attach_photo;
 	EditText edit_note;
@@ -42,6 +54,10 @@ public class EditActivity extends Activity implements OnClickListener {
 	AlertDialog picDetail;
 	
 	private AdView adView;
+	
+	private ColorPicker titleColorPicker, stripeColorPicker;
+	private TextView colorTitle, colorStripe;
+	private String stripeColor, titleColor;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +77,11 @@ public class EditActivity extends Activity implements OnClickListener {
 
 		button_save.setOnClickListener(this);
 		button_attach_photo.setOnClickListener(this);
+		
+		titleColorPicker = (ColorPicker) findViewById(R.id.titlePicker);
+		stripeColorPicker = (ColorPicker) findViewById(R.id.stripePicker);
+		colorTitle = (TextView) findViewById(R.id.colorTitle);
+		colorStripe = (TextView) findViewById(R.id.colorStripe);
 
 		Cursor cursor = getContentResolver().query(DbHandler.CONTENT_URI, null,
 				DbHandler.C_ID + "=" + id, null, null);
@@ -72,8 +93,19 @@ public class EditActivity extends Activity implements OnClickListener {
 				.getColumnIndex(DbHandler.C_NOTE));
 		DiaryApp.absolutePicPath = cursor.getString(cursor
 				.getColumnIndex(DbHandler.C_PICTURE));
+		titleColor = cursor.getString(cursor
+				.getColumnIndex(DbHandler.C_COLOR_TITLE));
+		stripeColor = cursor.getString(cursor
+				.getColumnIndex(DbHandler.C_COLOR_STRIPE));
 		
 		cursor.close();
+		
+		if(titleColor == null || titleColor.isEmpty()) titleColor = "#000000";
+		if(stripeColor == null || stripeColor.isEmpty()) stripeColor = "#ffffff";
+		
+		titleColorPicker.setColor(Color.parseColor(titleColor));
+		stripeColorPicker.setColor(Color.parseColor(stripeColor));
+		handleColorPickers();
 
 		edit_subject.setText(subjectString);
 		edit_note.setText(noteString);
@@ -105,6 +137,27 @@ public class EditActivity extends Activity implements OnClickListener {
 		}
 		super.onDestroy();
 	}
+	
+	private void handleColorPickers() {
+
+		titleColorPicker
+				.setOnColorChangedListener(new OnColorChangedListener() {
+					public void onColorChanged(int color) {
+						colorTitle.setTextColor(titleColorPicker.getColor());
+						titleColor = String.format("#%06X",
+								(0xFFFFFF & titleColorPicker.getColor()));
+					}
+				});
+
+		stripeColorPicker
+				.setOnColorChangedListener(new OnColorChangedListener() {
+					public void onColorChanged(int color) {
+						colorStripe.setTextColor(stripeColorPicker.getColor());
+						stripeColor = String.format("#%06X",
+								(0xFFFFFF & stripeColorPicker.getColor()));
+					}
+				});
+	}
 
 	public void onClick(View v) {
 		if (v.getId() == R.id.button_save) {
@@ -120,7 +173,7 @@ public class EditActivity extends Activity implements OnClickListener {
 				getContentResolver().update(
 						DbHandler.CONTENT_URI,
 						DbHandler.stringsToValues(id, noteSubject, noteText,
-								DiaryApp.absolutePicPath),
+								DiaryApp.absolutePicPath, titleColor, stripeColor),
 						DbHandler.C_ID + "=" + id, null);
 				DiaryApp.absolutePicPath = "null";
 				finish();
@@ -254,34 +307,28 @@ public class EditActivity extends Activity implements OnClickListener {
 	}
 
 	// --------------------Camera Stuff----------------------------
-
-	private String getLastImagePath() {
-		final String[] imageColumns = { MediaStore.Images.Media._ID,
-				MediaStore.Images.Media.DATA };
-		final String imageOrderBy = MediaStore.Images.Media._ID + " DESC";
-
-		Cursor imageCursor = managedQuery(
-				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, imageColumns,
-				null, null, imageOrderBy);
-
-		if (imageCursor.moveToFirst()) {
-			String fullPath = imageCursor.getString(imageCursor
-					.getColumnIndex(MediaStore.Images.Media.DATA));
-			imageCursor.close();
-			return fullPath;
-		} else {
-			return "null";
-		}
+	
+	private void galleryAddPic() {
+		Intent mediaScanIntent = new Intent(
+				"android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+		File f = new File(mCurrentPhotoPath);
+		Uri contentUri = Uri.fromFile(f);
+		mediaScanIntent.setData(contentUri);
+		this.sendBroadcast(mediaScanIntent);
 	}
 
 	private void handleBigCameraPhoto() {
+		if (mCurrentPhotoPath != null) {
+			galleryAddPic();
+		}
+
 		if (DiaryApp.absolutePicPath.equals("null"))
-			DiaryApp.absolutePicPath = getLastImagePath() + ";";
+			DiaryApp.absolutePicPath = mCurrentPhotoPath + ";";
 		else
-			DiaryApp.absolutePicPath += getLastImagePath() + ";";
+			DiaryApp.absolutePicPath += mCurrentPhotoPath + ";";
 		Log.d(TAG, "handleBigCameraPhoto: " + DiaryApp.absolutePicPath);
+		mCurrentPhotoPath = null;
 		// button_attach_photo.setClickable(false);
-		//button_attach_photo.setText("Change Picture");
 	}
 
 	private void getPathFromUri(Uri uri) {
@@ -297,8 +344,8 @@ public class EditActivity extends Activity implements OnClickListener {
 			DiaryApp.absolutePicPath = filePath + ";";
 		else
 			DiaryApp.absolutePicPath += filePath + ";";
+		Log.d(TAG, DiaryApp.absolutePicPath);
 		cursor.close();
-		//button_attach_photo.setText("Change Picture");
 	}
 
 	@Override
@@ -319,8 +366,77 @@ public class EditActivity extends Activity implements OnClickListener {
 		} // switch
 	}
 
+	private File createImageFile() throws IOException {
+		// Create an image file name
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+				.format(new Date());
+		String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
+		File albumF = getAlbumDir();
+		File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX,
+				albumF);
+		return imageF;
+	}
+	
+	public File getAlbumStorageDir(String albumName) {
+		return new File (
+				Environment.getExternalStorageDirectory()
+				+ "/dcim/"
+				+ albumName
+		);
+	}
+
+	private File getAlbumDir() {
+		File storageDir = null;
+
+		if (Environment.MEDIA_MOUNTED.equals(Environment
+				.getExternalStorageState())) {
+
+			try {
+				storageDir = getAlbumStorageDir(getString(R.string.album_name));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			if (storageDir != null) {
+				if (!storageDir.mkdirs()) {
+					if (!storageDir.exists()) {
+						Log.d("CameraSample", "failed to create directory");
+						return null;
+					}
+				}
+			}
+
+		} else {
+			Log.v(getString(R.string.app_name),
+					"External storage is not mounted READ/WRITE.");
+		}
+		
+		Log.d(TAG, storageDir.getPath());
+
+		return storageDir;
+	}
+
+	private File setUpPhotoFile() throws IOException {
+
+		File f = createImageFile();
+		mCurrentPhotoPath = f.getAbsolutePath();
+
+		return f;
+	}
+
 	protected void dispatchTakePictureIntent(int actionCode) {
+		File f = null;
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		try {
+			f = setUpPhotoFile();
+			mCurrentPhotoPath = f.getAbsolutePath();
+			takePictureIntent
+					.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+		} catch (IOException e) {
+			e.printStackTrace();
+			f = null;
+			mCurrentPhotoPath = null;
+		}
 		startActivityForResult(takePictureIntent, actionCode);
 	}
 }

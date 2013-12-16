@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Shader.TileMode;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,10 +28,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
+import com.larswerkman.colorpicker.ColorPicker;
+import com.larswerkman.colorpicker.ColorPicker.OnColorChangedListener;
 
 abstract class AlbumStorageDirFactory {
 	public abstract File getAlbumStorageDir(String albumName);
@@ -55,13 +59,18 @@ public class TypeActivity extends Activity implements OnClickListener {
 	private String mCurrentPhotoPath;
 	private static final String JPEG_FILE_PREFIX = "IMG_";
 	private static final String JPEG_FILE_SUFFIX = ".jpg";
+	
+	private ColorPicker titleColorPicker, stripeColorPicker;
+	private TextView colorTitle, colorStripe;
+	private String stripeColor, titleColor;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate");
-		setContentView(R.layout.type_activity);
+		// setContentView(R.layout.type_activity);
+		setContentView(R.layout.type_color_activity);
 
 		button_save = (Button) findViewById(R.id.button_save);
 		button_attach_photo = (Button) findViewById(R.id.button_attach_photo);
@@ -72,6 +81,33 @@ public class TypeActivity extends Activity implements OnClickListener {
 		button_attach_photo.setOnClickListener(this);
 
 		adView = (AdView) findViewById(R.id.ad_banner);
+		
+		titleColorPicker = (ColorPicker) findViewById(R.id.titlePicker);
+		stripeColorPicker = (ColorPicker) findViewById(R.id.stripePicker);
+		colorTitle = (TextView) findViewById(R.id.colorTitle);
+		colorStripe = (TextView) findViewById(R.id.colorStripe);
+		handleColorPickers();
+	}
+	
+	private void handleColorPickers() {
+
+		titleColorPicker
+				.setOnColorChangedListener(new OnColorChangedListener() {
+					public void onColorChanged(int color) {
+						colorTitle.setTextColor(titleColorPicker.getColor());
+						titleColor = String.format("#%06X",
+								(0xFFFFFF & titleColorPicker.getColor()));
+					}
+				});
+
+		stripeColorPicker
+				.setOnColorChangedListener(new OnColorChangedListener() {
+					public void onColorChanged(int color) {
+						colorStripe.setTextColor(stripeColorPicker.getColor());
+						stripeColor = String.format("#%06X",
+								(0xFFFFFF & stripeColorPicker.getColor()));
+					}
+				});
 	}
 
 	@Override
@@ -111,7 +147,7 @@ public class TypeActivity extends Activity implements OnClickListener {
 			} else {
 				// insert into database
 				new insertToDb().execute(noteSubject, noteText,
-						DiaryApp.absolutePicPath);
+						DiaryApp.absolutePicPath, titleColor, stripeColor);
 			}
 		}
 
@@ -248,9 +284,9 @@ public class TypeActivity extends Activity implements OnClickListener {
 				getContentResolver().insert(
 						DbHandler.CONTENT_URI,
 						DbHandler.stringsToValues(System.currentTimeMillis(),
-								params[0], params[1], params[2]));
+								params[0], params[1], params[2], params[3], params[4]));
 				Log.d(TAG, "Successfully posted: " + params[0] + ", "
-						+ params[1] + ", " + params[2]);
+						+ params[1] + ", " + params[2] + ", " + params[3] + ", " + params[4]);
 				return "Successfully posted: " + params[0];
 			} catch (Exception e) {
 				e.printStackTrace();

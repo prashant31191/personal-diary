@@ -26,6 +26,10 @@
     <string name="sort">Sort</string>
     <string name="pref_security_question">Security Question</string>
     <string name="question_summary">Select a question to answer in case your password is lost</string>
+    <string name="title">Title</string>
+    <string name="desc">Description</string>
+	<string name="overflow">Menu Overflow</string>
+	<string name="color_stripe">Color Stripe</string>
     <string-array name="security_questions">
         <item >What is your mother\'s maiden name?</item>
         <item >What is your place of birth?</item>

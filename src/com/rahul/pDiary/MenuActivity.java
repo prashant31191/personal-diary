@@ -73,7 +73,8 @@ public class MenuActivity extends Activity implements OnClickListener{
 			startActivity(new Intent(this, TypeActivity.class));
 		}
 		if(v.getId() == R.id.imageButton2) {
-			startActivity(new Intent(this, NoteListActivity.class));
+			// startActivity(new Intent(this, NoteListActivity.class));
+			startActivity(new Intent(this, NoteCardActivity.class));
 		}
 		if(v.getId() == R.id.imageButton3) {
 			startActivity(new Intent(this, PrefsActivity.class));

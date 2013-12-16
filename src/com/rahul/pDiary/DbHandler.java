@@ -13,12 +13,14 @@ public class DbHandler extends ContentProvider {
 	public static final String AUTHORITY = "content://com.rahul.pDiary.provider";
 	public static final Uri CONTENT_URI = Uri.parse(AUTHORITY);
 	public static final String DB_NAME = "notes.db";
-	public static final int DB_VERSION = 1;
+	public static final int DB_VERSION = 2;
 	public static final String TABLE = "notes_table";
 	public static final String C_ID = "_id";
 	public static final String C_SUBJECT = "subject";
 	public static final String C_NOTE = "status_text";
 	public static final String C_PICTURE = "picture";
+	public static final String C_COLOR_TITLE = "title_color";
+	public static final String C_COLOR_STRIPE = "stripe_color";
 
 	DbHelper dbHelper;
 	static SQLiteDatabase db;
@@ -74,7 +76,7 @@ public class DbHandler extends ContentProvider {
 				null, null, sortOrder);
 		return cursor;
 	}
-	
+
 	// Helper class for Database stuff
 	class DbHelper extends SQLiteOpenHelper {
 		static final String TAG = "DbHelper";
@@ -87,31 +89,40 @@ public class DbHandler extends ContentProvider {
 		public void onCreate(SQLiteDatabase db) {
 			String sql;
 			sql = String
-					.format("create table %s (%s int primary key, %s text, %s text, %s text)",
-							TABLE, C_ID, C_SUBJECT, C_NOTE, C_PICTURE);
+					.format("create table %s (%s int primary key, %s text, %s text, %s text, %s text, %s text)",
+							TABLE, C_ID, C_SUBJECT, C_NOTE, C_PICTURE,
+							C_COLOR_TITLE, C_COLOR_STRIPE);
 			Log.d(TAG, "onCreate with SQL : " + sql);
 			db.execSQL(sql);
 		}
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			Log.d(TAG, "onUpgrade");
-			// Usually ALTER TABLE goes here
-			// db.execSQL("drop table if exsists " + TABLE);
-			// onCreate(db);
+			String sql1 = String
+					.format("ALTER TABLE %s ADD COLUMN %s text DEFAULT '#000000'",
+							TABLE, C_COLOR_TITLE);
+			String sql2 = String
+					.format("ALTER TABLE %s ADD COLUMN %s text DEFAULT '#ffffff'",
+							TABLE, C_COLOR_STRIPE);
+			db.execSQL(sql1);
+			db.execSQL(sql2);
+			Log.d(TAG, "DB UPDATED!!");
 		}
 	}
 
-	public static ContentValues stringsToValues(long id, String subject, String notes, String picPath) {
+	public static ContentValues stringsToValues(long id, String subject,
+			String notes, String picPath, String titleColor, String stripeColor) {
 		ContentValues values = new ContentValues();
 		values.put(C_ID, id);
 		values.put(C_SUBJECT, subject);
 		values.put(C_NOTE, notes);
 		values.put(C_PICTURE, picPath);
+		values.put(C_COLOR_TITLE, titleColor);
+		values.put(C_COLOR_STRIPE, stripeColor);
 		return values;
 	}
 
-	//close all database connections
+	// close all database connections
 	public static void closeDatabase() {
 		try {
 			db.close();

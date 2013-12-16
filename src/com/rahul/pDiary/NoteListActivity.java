@@ -16,7 +16,6 @@ import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Environment;
@@ -337,7 +336,7 @@ public class NoteListActivity extends ListActivity implements
 					getContentResolver().insert(
 							DbHandler.CONTENT_URI,
 							DbHandler.stringsToValues(id, subject, note,
-									picPath));
+									picPath, "#000000", "ffffff"));
 				}
 			}
 			eventType = xpp.next();
