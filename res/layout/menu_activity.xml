@@ -17,40 +17,42 @@
         app:adUnitId="@string/admob_id" >
     </com.google.ads.AdView>
 
-    <ImageButton
-        android:id="@+id/imageButton2"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_centerInParent="true"
         android:layout_centerVertical="true"
-        android:background="@android:color/transparent"
-        android:contentDescription="@+id/image_gone"
-        android:padding="20dp"
-        android:src="@drawable/view_saved_notes" />
+        android:orientation="vertical" >
 
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/imageButton2"
-        android:layout_centerInParent="true"
-        android:background="@android:color/transparent"
-        android:contentDescription="@+id/image_gone"
-        android:padding="20dp"
-        android:src="@drawable/settings" />
+        <ImageButton
+            android:id="@+id/ib_write_new_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:contentDescription="@+id/image_gone"
+            android:padding="20dp"
+            android:src="@drawable/write_new_note" />
 
-    <ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/imageButton2"
-        android:layout_alignParentLeft="true"
-        android:layout_centerInParent="true"
-        android:background="@android:color/transparent"
-        android:contentDescription="@+id/image_gone"
-        android:padding="20dp"
-        android:src="@drawable/write_new_note" />
+        <ImageButton
+            android:id="@+id/ib_view_saved_notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:contentDescription="@+id/image_gone"
+            android:padding="20dp"
+            android:src="@drawable/view_saved_notes" />
+
+        <ImageButton
+            android:id="@+id/ib_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:contentDescription="@+id/image_gone"
+            android:padding="20dp"
+            android:src="@drawable/settings" />
+    </LinearLayout>
 
 </RelativeLayout>

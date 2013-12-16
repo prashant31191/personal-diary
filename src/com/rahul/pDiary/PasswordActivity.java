@@ -34,6 +34,9 @@ public class PasswordActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		if(DiaryApp.isThemeDark()) setTheme(android.R.style.Theme_DeviceDefault);
+		else setTheme(android.R.style.Theme_DeviceDefault_Light);
+		
 		super.onCreate(savedInstanceState);
 		final String secret = ((DiaryApp) getApplication()).prefs.getString(
 				"pref_password", "");

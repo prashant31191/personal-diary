@@ -99,10 +99,10 @@ public class DbHandler extends ContentProvider {
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			String sql1 = String
-					.format("ALTER TABLE %s ADD COLUMN %s text DEFAULT '#000000'",
+					.format("ALTER TABLE %s ADD COLUMN %s text DEFAULT '#808080'",
 							TABLE, C_COLOR_TITLE);
 			String sql2 = String
-					.format("ALTER TABLE %s ADD COLUMN %s text DEFAULT '#ffffff'",
+					.format("ALTER TABLE %s ADD COLUMN %s text DEFAULT '#808080'",
 							TABLE, C_COLOR_STRIPE);
 			db.execSQL(sql1);
 			db.execSQL(sql2);

@@ -18,7 +18,8 @@ public class MyCard extends RecyclableCard {
 
 	@Override
 	protected int getCardLayoutId() {
-		return R.layout.card_play;
+		if(DiaryApp.isThemeDark()) return R.layout.card_play_dark;
+		return R.layout.card_play_light;
 	}
 
 	@Override

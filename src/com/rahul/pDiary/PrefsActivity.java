@@ -1,6 +1,8 @@
 package com.rahul.pDiary;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -28,9 +30,15 @@ public class PrefsActivity extends PreferenceActivity implements
 	private AdView adView;
 	SharedPreferences prefs;
 	TextView ballTrap, pDiaryPro;
+	Context thisContext;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		if (DiaryApp.isThemeDark())
+			setTheme(android.R.style.Theme_DeviceDefault);
+		else
+			setTheme(android.R.style.Theme_DeviceDefault_Light);
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pref_activity);
 		addPreferencesFromResource(R.xml.prefs);
@@ -60,6 +68,7 @@ public class PrefsActivity extends PreferenceActivity implements
 			}
 		});
 
+		thisContext = this;
 		adView = (AdView) findViewById(R.id.ad_banner);
 	}
 
@@ -99,7 +108,24 @@ public class PrefsActivity extends PreferenceActivity implements
 		if (key.equals("security_question")) {
 			Log.d(TAG, "inside IF");
 			autoClick();
+		} else if (key.equals("theme")) {
+			try {
+				popAlert();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+	}
+
+	void popAlert() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(thisContext);
+		builder.setTitle(R.string.theme_alert_title);
+		builder.setMessage(R.string.theme_alert_summary);
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface arg0, int arg1) {
+			}
+		});
+		builder.show();
 	}
 }
 

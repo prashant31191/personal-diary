@@ -28,33 +28,45 @@
     <string name="question_summary">Select a question to answer in case your password is lost</string>
     <string name="title">Title</string>
     <string name="desc">Description</string>
-	<string name="overflow">Menu Overflow</string>
-	<string name="color_stripe">Color Stripe</string>
+    <string name="overflow">Menu Overflow</string>
+    <string name="color_stripe">Color Stripe</string>
+
     <string-array name="security_questions">
-        <item >What is your mother\'s maiden name?</item>
-        <item >What is your place of birth?</item>
-        <item >What is your favourite place?</item>
-        <item >What is your favourite movie?</item>
+        <item>What is your mother\'s maiden name?</item>
+        <item>What is your place of birth?</item>
+        <item>What is your favourite place?</item>
+        <item>What is your favourite movie?</item>
     </string-array>
     <string-array name="question_values">
-        <item >What is your mother\'s maiden name?</item>
-        <item >What is your place of birth?</item>
-        <item >What is your favourite place?</item>
-        <item >What is your favourite movie?</item>
+        <item>What is your mother\'s maiden name?</item>
+        <item>What is your place of birth?</item>
+        <item>What is your favourite place?</item>
+        <item>What is your favourite movie?</item>
     </string-array>
-        <string name="security_answer">Security Answer</string>
-        <string name="security_answer_summary">The answer to your security question</string>
-        <string name="forgot_password">Forgot password</string>
-        <string name="more_from_dev">More from Developer</string>
-        <string name="ball_trap">Ball Trap</string>
-        <string name="backup">Backup</string>
-        <string name="restore">Restore</string>
-        <string name="editText_confirm_password">Confirm password</string>
-        <string name="go_pro_text">An add-free version of Personal Diary is now available on Google Play!</string>
-        <string name="dont_show_again">Don\'t show again</string>
-        <string name="get_it_now">Get it now!</string>
-        <string name="no_thanks">No thanks</string>
-        <string name="p_diary_pro">Personal Diary Pro</string>
-        <string name="album_name">Personal Diary</string>
-
+    <string-array name="theme_names">
+        <item>Dark</item>
+        <item>Light</item>
+    </string-array>
+    <string-array name="theme_values">
+        <item >dark</item>
+        <item >light</item>
+    </string-array>
+    <string name="security_answer">Security Answer</string>
+    <string name="security_answer_summary">The answer to your security question</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="more_from_dev">More from Developer</string>
+    <string name="ball_trap">Ball Trap</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="editText_confirm_password">Confirm password</string>
+    <string name="go_pro_text">An add-free version of Personal Diary is now available on Google Play!</string>
+    <string name="dont_show_again">Don\'t show again</string>
+    <string name="get_it_now">Get it now!</string>
+    <string name="no_thanks">No thanks</string>
+    <string name="p_diary_pro">Personal Diary Pro</string>
+    <string name="album_name">Personal Diary</string>
+	<string name="theme_title">Theme</string>
+	<string name="theme_summary">Choose a theme for the application</string>
+	<string name="theme_alert_title">Theme changed</string>
+	<string name="theme_alert_summary">This theme change will reflect only when the app is restarted</string>
 </resources>

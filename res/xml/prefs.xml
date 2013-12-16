@@ -19,4 +19,11 @@
         android:summary="@string/security_answer_summary"
         android:title="@string/security_answer" />
 
+    <ListPreference
+        android:entries="@array/theme_names"
+        android:entryValues="@array/theme_values"
+        android:key="theme"
+        android:summary="@string/theme_summary"
+        android:title="@string/theme_title" />
+
 </PreferenceScreen>

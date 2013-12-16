@@ -21,13 +21,16 @@ public class MenuActivity extends Activity implements OnClickListener{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		if(DiaryApp.isThemeDark()) setTheme(android.R.style.Theme_DeviceDefault);
+		else setTheme(android.R.style.Theme_DeviceDefault_Light);
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu_activity);
 		Log.d(TAG, "onCreate");
 		
-		write = (ImageButton) findViewById(R.id.imageButton1);
-		view = (ImageButton) findViewById(R.id.imageButton2);
-		settings = (ImageButton) findViewById(R.id.imageButton3);
+		write = (ImageButton) findViewById(R.id.ib_write_new_note);
+		view = (ImageButton) findViewById(R.id.ib_view_saved_notes);
+		settings = (ImageButton) findViewById(R.id.ib_settings);
 		
 		write.setOnClickListener(this);
 		view.setOnClickListener(this);
@@ -69,14 +72,17 @@ public class MenuActivity extends Activity implements OnClickListener{
 	}
 
 	public void onClick(View v) {
-		if(v.getId() == R.id.imageButton1) {
+		if(v.getId() == R.id.ib_write_new_note) {
+			Log.d(TAG, "Write new note");
 			startActivity(new Intent(this, TypeActivity.class));
 		}
-		if(v.getId() == R.id.imageButton2) {
+		else if(v.getId() == R.id.ib_view_saved_notes) {
+			Log.d(TAG, "View saved notes");
 			// startActivity(new Intent(this, NoteListActivity.class));
 			startActivity(new Intent(this, NoteCardActivity.class));
 		}
-		if(v.getId() == R.id.imageButton3) {
+		else if(v.getId() == R.id.ib_settings) {
+			Log.d(TAG, "Settings");
 			startActivity(new Intent(this, PrefsActivity.class));
 		}
 	}

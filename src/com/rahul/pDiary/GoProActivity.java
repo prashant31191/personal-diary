@@ -20,6 +20,9 @@ public class GoProActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		if(DiaryApp.isThemeDark()) setTheme(android.R.style.Theme_DeviceDefault);
+		else setTheme(android.R.style.Theme_DeviceDefault_Light);
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.go_pro_activity);
 		context = getBaseContext();

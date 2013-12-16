@@ -1,3 +1,5 @@
+// android:configChanges="keyboardHidden|orientation|fontScale|keyboard"
+
 package com.rahul.pDiary;
 
 import java.io.File;
@@ -28,6 +30,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,18 +57,24 @@ public class TypeActivity extends Activity implements OnClickListener {
 	EditText edit_subject;
 
 	private AdView adView;
+	private boolean isPickerVisible = false;
 
 	AlertDialog picDetail;
 	private String mCurrentPhotoPath;
 	private static final String JPEG_FILE_PREFIX = "IMG_";
 	private static final String JPEG_FILE_SUFFIX = ".jpg";
-	
+
 	private ColorPicker titleColorPicker, stripeColorPicker;
 	private TextView colorTitle, colorStripe;
 	private String stripeColor, titleColor;
+	private LinearLayout llColors, colorLayout;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		if (DiaryApp.isThemeDark())
+			setTheme(android.R.style.Theme_DeviceDefault);
+		else
+			setTheme(android.R.style.Theme_DeviceDefault_Light);
 
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate");
@@ -76,19 +85,24 @@ public class TypeActivity extends Activity implements OnClickListener {
 		button_attach_photo = (Button) findViewById(R.id.button_attach_photo);
 		edit_subject = (EditText) findViewById(R.id.editText_subject);
 		edit_note = (EditText) findViewById(R.id.editText_note);
+		llColors = (LinearLayout) findViewById(R.id.ll_colors);
+		colorLayout = (LinearLayout) findViewById(R.id.color_layout);
 
 		button_save.setOnClickListener(this);
 		button_attach_photo.setOnClickListener(this);
+		llColors.setOnClickListener(this);
 
 		adView = (AdView) findViewById(R.id.ad_banner);
-		
+
 		titleColorPicker = (ColorPicker) findViewById(R.id.titlePicker);
 		stripeColorPicker = (ColorPicker) findViewById(R.id.stripePicker);
 		colorTitle = (TextView) findViewById(R.id.colorTitle);
 		colorStripe = (TextView) findViewById(R.id.colorStripe);
 		handleColorPickers();
+		
+		colorLayout.setVisibility(View.GONE);
 	}
-	
+
 	private void handleColorPickers() {
 
 		titleColorPicker
@@ -151,8 +165,17 @@ public class TypeActivity extends Activity implements OnClickListener {
 			}
 		}
 
-		if (v.getId() == R.id.button_attach_photo) {
+		else if (v.getId() == R.id.button_attach_photo) {
 			createDialogMenu();
+		}
+		
+		else if(v.getId() == R.id.ll_colors) {
+			if(isPickerVisible) {
+				colorLayout.setVisibility(View.GONE);
+			} else {
+				colorLayout.setVisibility(View.VISIBLE);
+			}
+			isPickerVisible = !isPickerVisible;
 		}
 	}
 
@@ -284,9 +307,11 @@ public class TypeActivity extends Activity implements OnClickListener {
 				getContentResolver().insert(
 						DbHandler.CONTENT_URI,
 						DbHandler.stringsToValues(System.currentTimeMillis(),
-								params[0], params[1], params[2], params[3], params[4]));
+								params[0], params[1], params[2], params[3],
+								params[4]));
 				Log.d(TAG, "Successfully posted: " + params[0] + ", "
-						+ params[1] + ", " + params[2] + ", " + params[3] + ", " + params[4]);
+						+ params[1] + ", " + params[2] + ", " + params[3]
+						+ ", " + params[4]);
 				return "Successfully posted: " + params[0];
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -401,13 +426,10 @@ public class TypeActivity extends Activity implements OnClickListener {
 				albumF);
 		return imageF;
 	}
-	
+
 	public File getAlbumStorageDir(String albumName) {
-		return new File (
-				Environment.getExternalStorageDirectory()
-				+ "/dcim/"
-				+ albumName
-		);
+		return new File(Environment.getExternalStorageDirectory() + "/dcim/"
+				+ albumName);
 	}
 
 	private File getAlbumDir() {
@@ -435,7 +457,7 @@ public class TypeActivity extends Activity implements OnClickListener {
 			Log.v(getString(R.string.app_name),
 					"External storage is not mounted READ/WRITE.");
 		}
-		
+
 		Log.d(TAG, storageDir.getPath());
 
 		return storageDir;

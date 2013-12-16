@@ -8,7 +8,7 @@ import android.util.Log;
 public class DiaryApp extends Application {
 	static final String TAG = "DiaryApp";
 	static String absolutePicPath = "null";
-	SharedPreferences prefs;
+	static SharedPreferences prefs;
 
 	@Override
 	public void onCreate() {
@@ -29,5 +29,11 @@ public class DiaryApp extends Application {
 		else if (sAns.equals(""))
 			toast += "security question";
 		return toast;
+	}
+	
+	static boolean isThemeDark() {
+		String theme = prefs.getString("theme", "dark");
+		if(theme.equals("dark")) return true;
+		return false;
 	}
 }

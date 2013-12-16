@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -58,10 +59,16 @@ public class EditActivity extends Activity implements OnClickListener {
 	private ColorPicker titleColorPicker, stripeColorPicker;
 	private TextView colorTitle, colorStripe;
 	private String stripeColor, titleColor;
+	
+	private LinearLayout llColors, colorLayout;
+	private boolean isPickerVisible = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
+		if(DiaryApp.isThemeDark()) setTheme(android.R.style.Theme_DeviceDefault);
+		else setTheme(android.R.style.Theme_DeviceDefault_Light);
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_activity);
 
@@ -71,12 +78,16 @@ public class EditActivity extends Activity implements OnClickListener {
 
 		button_save = (Button) findViewById(R.id.button_save);
 		button_attach_photo = (Button) findViewById(R.id.button_attach_photo);
+		
+		llColors = (LinearLayout) findViewById(R.id.ll_colors);
+		colorLayout = (LinearLayout) findViewById(R.id.color_layout);
 
 		edit_subject = (EditText) findViewById(R.id.editText_subject);
 		edit_note = (EditText) findViewById(R.id.editText_note);
 
 		button_save.setOnClickListener(this);
 		button_attach_photo.setOnClickListener(this);
+		llColors.setOnClickListener(this);
 		
 		titleColorPicker = (ColorPicker) findViewById(R.id.titlePicker);
 		stripeColorPicker = (ColorPicker) findViewById(R.id.stripePicker);
@@ -100,8 +111,8 @@ public class EditActivity extends Activity implements OnClickListener {
 		
 		cursor.close();
 		
-		if(titleColor == null || titleColor.isEmpty()) titleColor = "#000000";
-		if(stripeColor == null || stripeColor.isEmpty()) stripeColor = "#ffffff";
+		if(titleColor == null || titleColor.isEmpty()) titleColor = "#808080";
+		if(stripeColor == null || stripeColor.isEmpty()) stripeColor = "#808080";
 		
 		titleColorPicker.setColor(Color.parseColor(titleColor));
 		stripeColorPicker.setColor(Color.parseColor(stripeColor));
@@ -111,6 +122,7 @@ public class EditActivity extends Activity implements OnClickListener {
 		edit_note.setText(noteString);
 		
 		adView = (AdView) findViewById(R.id.ad_banner);
+		colorLayout.setVisibility(View.GONE);
 	}
 	
 	@Override
@@ -180,8 +192,17 @@ public class EditActivity extends Activity implements OnClickListener {
 			}
 		}
 
-		if (v.getId() == R.id.button_attach_photo) {
+		else if (v.getId() == R.id.button_attach_photo) {
 			createDialogMenu();
+		}
+		
+		else if(v.getId() == R.id.ll_colors) {
+			if(isPickerVisible) {
+				colorLayout.setVisibility(View.GONE);
+			} else {
+				colorLayout.setVisibility(View.VISIBLE);
+			}
+			isPickerVisible = !isPickerVisible;
 		}
 	}
 

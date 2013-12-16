@@ -53,6 +53,9 @@ public class NoteListActivity extends ListActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		if(DiaryApp.isThemeDark()) setTheme(android.R.style.Theme_DeviceDefault);
+		else setTheme(android.R.style.Theme_DeviceDefault_Light);
+		
 		Log.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.note_list_activity);

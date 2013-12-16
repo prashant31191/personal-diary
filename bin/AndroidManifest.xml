@@ -47,7 +47,7 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-                <activity
+        <activity
             android:name=".NoteCardActivity"
             android:configChanges="keyboardHidden|orientation|fontScale|keyboard"
             android:screenOrientation="portrait" >

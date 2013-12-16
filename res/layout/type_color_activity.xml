@@ -59,11 +59,42 @@
             </EditText>
 
             <LinearLayout
-                android:id="@+id/color_layout"
+                android:id="@+id/ll_colors"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/editText_note"
+                android:orientation="horizontal"
+                android:weightSum="100" >
+
+                <ImageView
+                    android:id="@+id/expandCollapse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/ic_action_expand" />
+
+                <TextView
+                    android:id="@+id/transitions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+                    android:ellipsize="none"
+                    android:fontFamily="sans-serif-light"
+                    android:maxLines="10"
+                    android:scrollHorizontally="false"
+                    android:text="Tap here to select colors"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#33B6EA" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/color_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/ll_colors"
                 android:orientation="horizontal" >
 
                 <LinearLayout
@@ -71,12 +102,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
                     android:orientation="vertical" >
-
-                    <com.larswerkman.colorpicker.ColorPicker
-                        android:id="@+id/titlePicker"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal" />
 
                     <TextView
                         android:id="@+id/colorTitle"
@@ -86,6 +111,12 @@
                         android:fontFamily="sans-serif-thin"
                         android:text="Title Color"
                         android:textSize="26sp" />
+
+                    <com.larswerkman.colorpicker.ColorPicker
+                        android:id="@+id/titlePicker"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -95,12 +126,6 @@
                     android:layout_weight="50"
                     android:orientation="vertical" >
 
-                    <com.larswerkman.colorpicker.ColorPicker
-                        android:id="@+id/stripePicker"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal" />
-
                     <TextView
                         android:id="@+id/colorStripe"
                         android:layout_width="wrap_content"
@@ -109,6 +134,12 @@
                         android:fontFamily="sans-serif-thin"
                         android:text="Stripe Color"
                         android:textSize="26sp" />
+
+                    <com.larswerkman.colorpicker.ColorPicker
+                        android:id="@+id/stripePicker"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
