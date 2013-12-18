@@ -53,9 +53,11 @@ public class NoteCardActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		if(DiaryApp.isThemeDark()) setTheme(android.R.style.Theme_DeviceDefault);
-		else setTheme(android.R.style.Theme_DeviceDefault_Light);
-		
+		if (DiaryApp.isThemeDark())
+			setTheme(android.R.style.Theme_DeviceDefault);
+		else
+			setTheme(android.R.style.Theme_DeviceDefault_Light);
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.note_card_activity);
 		adView = (AdView) findViewById(R.id.ad_banner);
@@ -141,10 +143,12 @@ public class NoteCardActivity extends Activity {
 			note = relativeTime.toString() + "\n" + note;
 			Log.d(TAG, "just before creation" + subject + ":" + note + ", "
 					+ titleColor + " " + stripeColor);
-			MyCard newCard = new MyCard(subject, note, stripeColor == null
-					|| stripeColor.isEmpty() ? "#808080" : stripeColor,
-					titleColor == null || titleColor.isEmpty() ? "#808080"
-							: titleColor, false, true);
+			if (titleColor == null || titleColor.isEmpty() || titleColor.equals("null"))
+				titleColor = "#808080";
+			if (stripeColor == null || stripeColor.isEmpty() || stripeColor.equals("null"))
+				stripeColor = "#808080";
+			MyCard newCard = new MyCard(subject, note, stripeColor, titleColor,
+					false, true);
 
 			newCard.setOnClickListener(new OnClickListener() {
 

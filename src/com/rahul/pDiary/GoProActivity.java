@@ -54,6 +54,15 @@ public class GoProActivity extends Activity {
 		});
 	}
 	
+	
+	
+	@Override
+	public void onBackPressed() {
+		startActivity(new Intent(context, MenuActivity.class));
+	}
+
+
+
 	@Override
 	protected void onStop() {
 		super.onStop();

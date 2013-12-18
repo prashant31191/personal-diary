@@ -111,8 +111,10 @@ public class EditActivity extends Activity implements OnClickListener {
 		
 		cursor.close();
 		
-		if(titleColor == null || titleColor.isEmpty()) titleColor = "#808080";
-		if(stripeColor == null || stripeColor.isEmpty()) stripeColor = "#808080";
+		if (titleColor == null || titleColor.isEmpty() || titleColor.equals("null"))
+			titleColor = "#808080";
+		if (stripeColor == null || stripeColor.isEmpty() || stripeColor.equals("null"))
+			stripeColor = "#808080";
 		
 		titleColorPicker.setColor(Color.parseColor(titleColor));
 		stripeColorPicker.setColor(Color.parseColor(stripeColor));
